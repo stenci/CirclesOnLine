@@ -67,29 +67,28 @@ class CirclesOnLine(CirclesOnLineTemplate):
         x = r
         dx = (self.canvas.get_width() - self.height) / (self.n_circles_tot - 1)
         for i in range(int(self.n_circles_tot)):
-            self.canvas.fill_style = (
-                self.circle_done_color
-                if self.n_circles_done and self.n_circles_done >= i + 1
-                else self.circle_todo_color
-            )
+            if self.n_circles_done and self.n_circles_done >= i + 1:
+                circle_color = self.circle_done_color
+                text_color = self.text_done_color
+            else:
+                circle_color = self.circle_todo_color
+                text_color = self.text_todo_color
+
+            self.canvas.fill_style = circle_color
             self.canvas.begin_path()
             self.canvas.arc(x, r, r, 0, 2 * 3.14159)
             self.canvas.fill()
 
-            self.canvas.fill_style = (
-                self.text_done_color
-                if self.n_circles_done and self.n_circles_done >= i + 1
-                else self.text_todo_color
-            )
+            self.canvas.fill_style = text_color
             self.canvas.font = f"{int(r * 1.5)}px Arial"
             self.canvas.text_align = "center"
             self.canvas.text_baseline = "middle"
             self.canvas.fill_text(str(i + 1), x, r)
 
             if dist_point_point(x, r, self.mouse_x, self.mouse_y) < r:
-                self.canvas.stroke_style = 
+                self.canvas.stroke_style = text_color
                 self.canvas.begin_path()
-                self.canvas.arc(x, r, r, 0, 2 * 3.14159)
+                self.canvas.arc(x, r, r * 0.8, 0, 2 * 3.14159)
                 self.canvas.stroke()
                 n_circle = i
 
@@ -112,7 +111,7 @@ class CirclesOnLine(CirclesOnLineTemplate):
         self.mouse_x = x
         self.mouse_y = y
         n_circle = self.refresh()
-        self.raise_event('click', n_circle=n_circle)
+        self.raise_event("click", n_circle=n_circle + 1)
 
     def canvas_mouse_move(self, x, y, **event_args):
         self.mouse_x = x

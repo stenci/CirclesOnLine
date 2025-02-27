@@ -17,9 +17,10 @@ components:
   name: number_done
   properties: {text: '3', type: number}
   type: TextBox
-- layout_properties: {grid_position: 'YPMUNV,IQFUUA'}
+- event_bindings: {click: circles_on_line_1_click}
+  layout_properties: {grid_position: 'YPMUNV,IQFUUA'}
   name: circles_on_line_1
-  properties: {height: 25, n_circles: 4}
+  properties: {height: 30, n_circles: 4}
   type: form:CirclesOnLine
 container:
   event_bindings: {show: form_show}
