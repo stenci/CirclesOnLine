@@ -1,4 +1,5 @@
 from ._anvil_designer import CirclesOnLineTemplate
+import math
 
 
 def clamp(value, min_value, max_value):
@@ -7,11 +8,17 @@ def clamp(value, min_value, max_value):
     return max(min_value, min(value, max_value))
 
 
+def dist_point_point(x1, y1, x2, y2):
+    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
+
 class CirclesOnLine(CirclesOnLineTemplate):
     def __init__(self, **properties):
         self._height = 20
         self._n_circles_tot = 4
         self._n_circles_done = 0
+        self.mouse_x = -1
+        self.mouse_y = -1
 
         self.init_components(**properties)
 
@@ -55,6 +62,7 @@ class CirclesOnLine(CirclesOnLineTemplate):
         self.canvas.fill_style = self.line_color
         self.canvas.fill_rect(0, self.height / 2 - 2, self.canvas.get_width(), 4)
 
+        n_circle = None
         r = self.height / 2
         x = r
         dx = (self.canvas.get_width() - self.height) / (self.n_circles_tot - 1)
@@ -78,10 +86,35 @@ class CirclesOnLine(CirclesOnLineTemplate):
             self.canvas.text_baseline = "middle"
             self.canvas.fill_text(str(i + 1), x, r)
 
+            if dist_point_point(x, r, self.mouse_x, self.mouse_y) < r:
+                self.canvas.stroke_style = 
+                self.canvas.begin_path()
+                self.canvas.arc(x, r, r, 0, 2 * 3.14159)
+                self.canvas.stroke()
+                n_circle = i
+
             x += dx
+
+        return n_circle
 
     def canvas_reset(self, **event_args):
         self.refresh()
 
     def canvas_show(self, **event_args):
+        self.refresh()
+
+    def canvas_mouse_leave(self, x, y, **event_args):
+        self.mouse_x = -1
+        self.mouse_y = -1
+        self.refresh()
+
+    def canvas_mouse_up(self, x, y, button, **event_args):
+        self.mouse_x = x
+        self.mouse_y = y
+        n_circle = self.refresh()
+        self.raise_event('click', n_circle=n_circle)
+
+    def canvas_mouse_move(self, x, y, **event_args):
+        self.mouse_x = x
+        self.mouse_y = y
         self.refresh()
