@@ -1,0 +1,27 @@
+components:
+- layout_properties: {grid_position: 'EXBNCU,MBNWUY'}
+  name: label_1
+  properties: {}
+  type: Label
+- event_bindings: {change: update_circles}
+  layout_properties: {grid_position: 'EXBNCU,MKIIBE'}
+  name: number_of_circles
+  properties: {text: '6', type: number}
+  type: TextBox
+- layout_properties: {grid_position: 'CMMIVN,FKUIJG'}
+  name: label_2
+  properties: {}
+  type: Label
+- event_bindings: {change: update_circles}
+  layout_properties: {grid_position: 'CMMIVN,OWMFFI'}
+  name: number_done
+  properties: {text: '3', type: number}
+  type: TextBox
+- layout_properties: {grid_position: 'YPMUNV,IQFUUA'}
+  name: circles_on_line_1
+  properties: {height: 25, n_circles: 4}
+  type: form:CirclesOnLine
+container:
+  event_bindings: {show: form_show}
+  type: ColumnPanel
+is_package: true
