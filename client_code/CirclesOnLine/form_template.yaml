@@ -22,3 +22,5 @@ properties:
 - {default_value: '#fecdcd', group: Colors, important: true, name: text_todo_color, type: color}
 - {default_value: '#008000', group: Colors, important: true, name: circle_done_color, type: color}
 - {default_value: '#80ff80', group: Colors, important: true, name: text_done_color, type: color}
+toolbox_item:
+  icon: {dark: 'asset:designer_icons/CirclesOnLineDark.png', light: 'asset:designer_icons/CirclesOnLine.png'}
