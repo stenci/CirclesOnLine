@@ -3,7 +3,7 @@ correct_dependency_ids: {}
 dependencies: []
 name: Circles On Line
 native_deps: null
-package_name: M3_App_2
+package_name: CirclesOnLine
 runtime_options:
   client_version: '3'
   server_spec: {base: python310-minimal}

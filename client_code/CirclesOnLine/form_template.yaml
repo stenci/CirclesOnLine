@@ -2,7 +2,7 @@ components:
 - event_bindings: {mouse_leave: canvas_mouse_leave, mouse_move: canvas_mouse_move, mouse_up: canvas_mouse_up, reset: canvas_reset, show: canvas_show}
   layout_properties: {grid_position: 'KABTSV,KEDUDU'}
   name: canvas
-  properties: {height: 49}
+  properties: {height: '50'}
   type: Canvas
 container: {type: ColumnPanel}
 custom_component: true
@@ -16,9 +16,9 @@ is_package: true
 properties:
 - {default_value: 15, description: Component height, important: true, name: height, type: number}
 - {default_binding_prop: true, default_value: 4, description: Number of circles, important: true, name: n_circles_tot, type: number}
-- {description: Number of done circles, important: true, name: n_circles_done, type: number}
-- {default_value: '#f0f278', group: Colors, important: true, name: line_color, type: color}
-- {default_value: '#9b8e03', group: Colors, important: true, name: circle_todo_color, type: color}
-- {default_value: '#ffffff', group: Colors, important: true, name: text_todo_color, type: color}
-- {default_value: '#ac0606', group: Colors, important: true, name: circle_done_color, type: color}
-- {default_value: '#febebe', group: Colors, important: true, name: text_done_color, type: color}
+- {default_value: 2, description: Number of done circles, important: true, name: n_circles_done, type: number}
+- {default_value: '#c0c000', group: Colors, important: true, name: line_color, type: color}
+- {default_value: '#c00000', group: Colors, important: true, name: circle_todo_color, type: color}
+- {default_value: '#fecdcd', group: Colors, important: true, name: text_todo_color, type: color}
+- {default_value: '#008000', group: Colors, important: true, name: circle_done_color, type: color}
+- {default_value: '#80ff80', group: Colors, important: true, name: text_done_color, type: color}

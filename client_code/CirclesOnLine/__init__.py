@@ -1,5 +1,6 @@
 from ._anvil_designer import CirclesOnLineTemplate
 import math
+import anvil.js
 
 
 def clamp(value, min_value, max_value):
@@ -14,9 +15,11 @@ def dist_point_point(x1, y1, x2, y2):
 
 class CirclesOnLine(CirclesOnLineTemplate):
     def __init__(self, **properties):
-        self._height = 20
+        self._height = 40
         self._n_circles_tot = 4
         self._n_circles_done = 0
+        self._line_color = "#c0c000"
+
         self.mouse_x = -1
         self.mouse_y = -1
 
@@ -56,17 +59,32 @@ class CirclesOnLine(CirclesOnLineTemplate):
         if self._n_circles_done != old_value:
             self.refresh()
 
-    def refresh(self):
-        self.canvas.clear_rect(0, 0, self.canvas.get_width(), self.canvas.get_height())
+    @property
+    def line_color(self):
+        return self._line_color
 
-        self.canvas.fill_style = self.line_color
-        self.canvas.fill_rect(0, self.height / 2 - 2, self.canvas.get_width(), 4)
+    @line_color.setter
+    def line_color(self, value):
+        self._line_color = value
+        self.refresh()
+
+    def refresh(self):
+        # clear the old drawing
+        self.canvas.clear_rect(0, 0, self.canvas.get_width(), self.height)
 
         n_circle = None
         r = self.height / 2
         x = r
+
+        # draw the horizontal line
+        self.canvas.fill_style = self.line_color
+        self.canvas.fill_rect(
+            0, self.height / 2 - r * 0.2, self.canvas.get_width(), r * 0.4
+        )
+
         dx = (self.canvas.get_width() - self.height) / (self.n_circles_tot - 1)
         for i in range(int(self.n_circles_tot)):
+            # pick the correct colors based on whether the i-th circle is done
             if self.n_circles_done and self.n_circles_done >= i + 1:
                 circle_color = self.circle_done_color
                 text_color = self.text_done_color
@@ -74,25 +92,34 @@ class CirclesOnLine(CirclesOnLineTemplate):
                 circle_color = self.circle_todo_color
                 text_color = self.text_todo_color
 
+            # draw the circle
             self.canvas.fill_style = circle_color
             self.canvas.begin_path()
             self.canvas.arc(x, r, r, 0, 2 * 3.14159)
             self.canvas.fill()
 
+            # draw the number text
             self.canvas.fill_style = text_color
             self.canvas.font = f"{int(r * 1.5)}px Arial"
             self.canvas.text_align = "center"
-            self.canvas.text_baseline = "middle"
-            self.canvas.fill_text(str(i + 1), x, r)
+            self.canvas.text_baseline = "alphabetic"
+            self.canvas.fill_text(str(i + 1), x, r * 1.5)
 
+            # if the mouse is over the i-th circle, draw the highlight
             if dist_point_point(x, r, self.mouse_x, self.mouse_y) < r:
                 self.canvas.stroke_style = text_color
+                self.canvas.line_width = max(2, r / 10)
                 self.canvas.begin_path()
                 self.canvas.arc(x, r, r * 0.8, 0, 2 * 3.14159)
                 self.canvas.stroke()
                 n_circle = i
 
             x += dx
+
+        if n_circle:
+            anvil.js.get_dom_node(self.canvas).style.cursor = "pointer"
+        else:
+            anvil.js.get_dom_node(self.canvas).style.cursor = "default"
 
         return n_circle
 

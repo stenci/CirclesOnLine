@@ -20,7 +20,7 @@ components:
 - event_bindings: {click: circles_on_line_1_click}
   layout_properties: {grid_position: 'YPMUNV,IQFUUA'}
   name: circles_on_line_1
-  properties: {height: 30, n_circles: 4}
+  properties: {height: 40, line_color: '#e656a3', n_circles: 4, n_circles_done: 2}
   type: form:CirclesOnLine
 container:
   event_bindings: {show: form_show}
