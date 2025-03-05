@@ -17,6 +17,11 @@ properties:
 - {default_value: 15, description: Component height, important: true, name: height, type: number}
 - {default_binding_prop: true, default_value: 4, description: Number of circles, important: true, name: n_circles_tot, type: number}
 - {default_value: 2, description: Number of done circles, important: true, name: n_circles_done, type: number}
+- default_value: []
+  description: Tooltips shown when hovering over each circle
+  important: true
+  name: tooltips
+  type: text[]
 - {default_value: '#c0c000', group: Colors, important: true, name: line_color, type: color}
 - {default_value: '#c00000', group: Colors, important: true, name: circle_todo_color, type: color}
 - {default_value: '#fecdcd', group: Colors, important: true, name: text_todo_color, type: color}

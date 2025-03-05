@@ -15,9 +15,8 @@ def dist_point_point(x1, y1, x2, y2):
 
 
 class CirclesOnLine(AutoRefreshingCustomComponent, CirclesOnLineTemplate):
-    AutoRefreshingCustomComponent.auto_refresh_on_property_change(
-        ["n_circles_tot", "line_color"], 0.2
-    )
+    AutoRefreshingCustomComponent.skip_properties = {'tooltips', 'n_circles_tot'}
+    AutoRefreshingCustomComponent.delay = 1
 
     def __init__(self, **properties):
         self._height = 40
@@ -104,10 +103,13 @@ class CirclesOnLine(AutoRefreshingCustomComponent, CirclesOnLineTemplate):
 
             x += dx
 
-        if n_circle:
-            anvil.js.get_dom_node(self.canvas).style.cursor = "pointer"
-        else:
+        if n_circle is None:
             anvil.js.get_dom_node(self.canvas).style.cursor = "default"
+            self.canvas.tooltip = ""
+        else:
+            anvil.js.get_dom_node(self.canvas).style.cursor = "pointer"
+            if n_circle < len(self.tooltips):
+                self.canvas.tooltip = self.tooltips[n_circle]
 
         return n_circle
 
