@@ -1,11 +1,9 @@
-from anvil.designer import in_designer
 import anvil
 
 
 class _PropertyWrapper:
     """
-    Descriptor that wraps a CustomComponentProperty,
-    and defers refreshing via a debounced Timer
+    Descriptor that wraps a CustomComponentProperty, and defers redrawing via a debounced Timer
     """
 
     def __init__(self, component_property, prop_name):
@@ -20,16 +18,19 @@ class _PropertyWrapper:
         self.property.__set__(obj, value)
 
         if value != old_value and self.prop_name not in obj.__class__.skip_properties:
-            obj._schedule_refresh()
+            obj.schedule_redraw()
 
 
-class AutoRefreshingCustomComponent:
+class AutoRedrawCustomComponent:
     """
     1. Subclass this mixin alongside the _Template class
-    2. At the class level of the custom component list which properties should cause a refresh:
-         AutoRefreshingCustomComponent.skip_properties = {'prop1', 'prop2'}
-         AutoRefreshingCustomComponent.delay = 0.5
-    3. Implement a `refresh()` method on the custom component (called after the 0.1s debounce)
+    2. At the class level of the custom component list which properties should cause a redraw:
+         AutoRedrawCustomComponent.skip_properties = {'prop1', 'prop2'}
+         AutoRedrawCustomComponent.delay = 0.5
+    3. Implement a `redraw()` method on the custom component (called after the 0.1s debounce)
+
+    The custom component can call self.redraw() for an immediate redraw, for example inside
+    mouse event handlers, or can call self.schedule_redraw() for a debounced redraw.
     """
 
     skip_properties = set()
@@ -37,15 +38,13 @@ class AutoRefreshingCustomComponent:
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
-        if not in_designer:
-            return
 
         for prop_name in dir(cls):
             prop_value = getattr(cls, prop_name)
             if isinstance(prop_value, (anvil.CustomComponentProperty, property)):
                 setattr(cls, prop_name, _PropertyWrapper(prop_value, prop_name))
 
-    def _schedule_refresh(self):
+    def schedule_redraw(self):
         if not hasattr(self, "_debounce_timer"):
             t = anvil.Timer()
             t.interval = 0
@@ -57,5 +56,5 @@ class AutoRefreshingCustomComponent:
 
     def _on_debounce_timer_tick(self, **event_args):
         self._debounce_timer.interval = 0
-        if callable(getattr(self, "refresh", None)):
-            self.refresh()
+        if callable(getattr(self, "redraw", None)):
+            self.redraw()

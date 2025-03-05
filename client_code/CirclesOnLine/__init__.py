@@ -1,4 +1,4 @@
-from ..AutoRefreshingCustomComponent import AutoRefreshingCustomComponent
+from ..AutoRedrawCustomComponent import AutoRedrawCustomComponent
 from ._anvil_designer import CirclesOnLineTemplate
 import math
 import anvil.js
@@ -14,9 +14,8 @@ def dist_point_point(x1, y1, x2, y2):
     return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
 
-class CirclesOnLine(AutoRefreshingCustomComponent, CirclesOnLineTemplate):
-    AutoRefreshingCustomComponent.skip_properties = {'tooltips', 'n_circles_tot'}
-    AutoRefreshingCustomComponent.delay = 1
+class CirclesOnLine(AutoRedrawCustomComponent, CirclesOnLineTemplate):
+    AutoRedrawCustomComponent.skip_properties = {'tooltips'}
 
     def __init__(self, **properties):
         self._height = 40
@@ -55,7 +54,7 @@ class CirclesOnLine(AutoRefreshingCustomComponent, CirclesOnLineTemplate):
     def n_circles_done(self, value):
         self._n_circles_done = clamp(value, 0, 50)
 
-    def refresh(self):
+    def redraw(self):
         # clear the old drawing
         self.canvas.clear_rect(0, 0, self.canvas.get_width(), self.height)
 
@@ -114,23 +113,23 @@ class CirclesOnLine(AutoRefreshingCustomComponent, CirclesOnLineTemplate):
         return n_circle
 
     def canvas_reset(self, **event_args):
-        self.refresh()
+        self.schedule_redraw()
 
     def canvas_show(self, **event_args):
-        self.refresh()
+        self.schedule_redraw()
 
     def canvas_mouse_leave(self, x, y, **event_args):
         self.mouse_x = -1
         self.mouse_y = -1
-        self.refresh()
+        self.redraw()
 
     def canvas_mouse_up(self, x, y, button, **event_args):
         self.mouse_x = x
         self.mouse_y = y
-        n_circle = self.refresh()
+        n_circle = self.redraw()
         self.raise_event("click", n_circle=n_circle + 1)
 
     def canvas_mouse_move(self, x, y, **event_args):
         self.mouse_x = x
         self.mouse_y = y
-        self.refresh()
+        self.redraw()
