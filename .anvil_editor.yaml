@@ -7,6 +7,7 @@ unique_ids:
   forms:
     CirclesOnLine: '1740612298258497002552753.014'
     Test: '1740612769670951967138572.4375'
-  modules: {}
+  modules:
+    DebouncedAutoRefreshingCustomComponent: '1741206537017848172719531.4064'
   scripts: {}
   server_modules: {}
