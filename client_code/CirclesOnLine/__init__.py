@@ -1,3 +1,4 @@
+from ..AutoRefreshingCustomComponent import AutoRefreshingCustomComponent
 from ._anvil_designer import CirclesOnLineTemplate
 import math
 import anvil.js
@@ -13,12 +14,15 @@ def dist_point_point(x1, y1, x2, y2):
     return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
 
-class CirclesOnLine(CirclesOnLineTemplate):
+class CirclesOnLine(AutoRefreshingCustomComponent, CirclesOnLineTemplate):
+    AutoRefreshingCustomComponent.auto_refresh_on_property_change(
+        ["n_circles_tot", "line_color"], 0.2
+    )
+
     def __init__(self, **properties):
         self._height = 40
         self._n_circles_tot = 4
         self._n_circles_done = 0
-        self._line_color = "#c0c000"
 
         self.mouse_x = -1
         self.mouse_y = -1
@@ -35,7 +39,6 @@ class CirclesOnLine(CirclesOnLineTemplate):
         self._height = clamp(value, 5, 1000)
         if self._height != old_value:
             self.canvas.height = self._height
-            self.refresh()
 
     @property
     def n_circles_tot(self):
@@ -43,10 +46,7 @@ class CirclesOnLine(CirclesOnLineTemplate):
 
     @n_circles_tot.setter
     def n_circles_tot(self, value):
-        old_value = self._n_circles_tot
         self._n_circles_tot = clamp(value, 2, 50)
-        if self._n_circles_tot != old_value:
-            self.refresh()
 
     @property
     def n_circles_done(self):
@@ -54,19 +54,7 @@ class CirclesOnLine(CirclesOnLineTemplate):
 
     @n_circles_done.setter
     def n_circles_done(self, value):
-        old_value = self._n_circles_done
         self._n_circles_done = clamp(value, 0, 50)
-        if self._n_circles_done != old_value:
-            self.refresh()
-
-    @property
-    def line_color(self):
-        return self._line_color
-
-    @line_color.setter
-    def line_color(self, value):
-        self._line_color = value
-        self.refresh()
 
     def refresh(self):
         # clear the old drawing
