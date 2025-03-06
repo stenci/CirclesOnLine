@@ -15,7 +15,7 @@ def dist_point_point(x1, y1, x2, y2):
 
 
 class CirclesOnLine(AutoRedrawCustomComponent, CirclesOnLineTemplate):
-    AutoRedrawCustomComponent.skip_properties = {'tooltips'}
+    skip_properties = {'tooltips'}
 
     def __init__(self, **properties):
         self._height = 40
