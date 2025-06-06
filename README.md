@@ -2,6 +2,8 @@
 
 This package provides a reusable [Anvil](https://anvil.works) custom component that visually represents progress as a series of numbered circles arranged along a line. Each circle corresponds to a step, with customizable colors for the line, completed steps, and pending steps. The component is fully implemented in Python and demonstrates advanced techniques for dynamic graphics, event handling, and efficient redraw management.
 
+![](snapshot.png)
+
 ## Features
 
 - **Visual Progress Indicator:** Displays a horizontal line with circles representing each step. Each circle contains its step number.
