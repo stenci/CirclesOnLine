@@ -1,8 +1,12 @@
 # Circles On Line: Anvil Custom Component
 
-This package provides a reusable [Anvil](https://anvil.works) custom component that visually represents progress as a series of numbered circles arranged along a line. Each circle corresponds to a step, with customizable colors for the line, completed steps, and pending steps. The component is fully implemented in Python and demonstrates advanced techniques for dynamic graphics, event handling, and efficient redraw management.
+This package offers a reusable [Anvil](https://anvil.works) custom component that displays progress as a series of numbered circles arranged along a line. Each circle represents a step, with options to customize the colors for the line, completed steps, and pending steps. The component is written entirely in Python and illustrates techniques for dynamic graphics, event handling, and efficient redraw management.
 
 ![](snapshot.png)
+
+This custom component was initially developed in response to [this forum post](https://anvil.works/forum/t/can-flowpanels-hide-excess-elements-instead-of-wrap/23701), and later enhanced with ideas from [this post](https://anvil.works/forum/t/automatically-refresh-custom-components-when-properties-change/23746). The result is quite solid and is already suitable for production use.
+
+Here is the [clone link](https://anvil.works/build#clone:MNG36WQCCISFBR2M=JJ4ATUC2CCQPJTK5JIRXXSUJ).
 
 ## Features
 
